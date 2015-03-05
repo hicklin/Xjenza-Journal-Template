@@ -1,0 +1,233 @@
+% Copyright (C) 2014 William Hicklin. Last revised 04/03/2015.
+
+% This is xjenza.sty, a LaTeX style for the Maltese Journal Xjenza.
+%
+% This package is supplied with a preamble file named `xjenza-preamble.tex'. This
+% file contains a list on commonly used packages in this journal. There are also
+% some new commands and redefinitions which might come in handy for some papers.
+% 
+% This package is also supplied with a `xjenza-main.tex' file which can be
+% changed to `xjenza-Vol-Issue.tex'. This file is where the document is written.
+% 
+% The xjenza package should contain: packages/xjenza.sty, packages/xjenza-
+% preamble.tex, packages/apa.bbx, packages/apa.cbx, xjenza-main.tex.
+% 
+% The `apa.bbx' and `apa.cbx' files should be interchanged with those of the
+% biblatex-apa style. On Linux systems this is normally found in 
+% /usr/local/share/texmf/tex/latex/biblatex-apa
+%
+% If you find any bugs in the style files, or omissions in the documentation,
+% please report them to: E-mail whic0001@um.edu.mt
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  Include required packages.
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\RequirePackage{fancyhdr}
+\RequirePackage{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{amsthm}
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  Setting margins
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\setlength{\paperwidth}{597.50787pt}
+\setlength{\paperheight}{845.04684pt}
+\setlength{\textwidth}{497.92322pt} 
+\setlength{\textwidth}{497.92322pt}
+\setlength{\textheight}{654.41338pt}
+\setlength{\oddsidemargin}{-21.33955pt}
+\setlength{\evensidemargin}{-21.33955pt}
+\setlength{\topmargin}{-28.45274pt}
+\setlength{\headheight}{12.0pt}
+\setlength{\headsep}{25.0pt}
+\setlength{\topskip}{10.0pt}
+\setlength{\footskip}{30.0pt}
+\setlength{\marginparwidth}{4.0pt}
+\setlength{\marginparsep}{10.0pt}
+\setlength{\columnsep}{14.22636pt}
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  Set captions type-setting.
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\usepackage[margin=10pt,font=footnotesize,labelfont=bf,justification=justified]{caption}
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  Settting global variables and definitions
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\def\keywords#1{\gdef\@keywords{#1}}
+\def\abbreviations#1{\gdef\@abbreviations{#1}}
+\def\shortTitle#1{\gdef\@shortTitle{#1}}
+\def\doi#1{\gdef\@doi{#1}}
+\def\articleType#1{\gdef\@articleType{#1}}
+\def\authorAnnotation#1{\gdef\@authorAnnotation{#1}}
+\def\correspondanceName#1{\gdef\@correspondanceName{#1}}
+\def\correspondanceMail#1{\gdef\@correspondanceMail{#1}}
+\def\abstrac#1{\gdef\@abstrac{#1}}
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  The \keywords{} command
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\newcommand{\keywordscom}[1]{%
+
+\ifthenelse{\equal{#1}{}}{}{
+\noindent \textbf{Keywords} #1\\
+}
+}
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  The \abbreviations{} command
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\newcommand{\abbreviationscom}[1]{%
+
+\ifthenelse{\equal{#1}{}}{}{
+\begin{small}
+\noindent \underline{\textit{Abbreviations}}\\
+\\
+#1
+\end{small}
+}
+}
+
+
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+%  The \maketitle command
+%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\renewcommand{\maketitle}{%
+% the following fiedls are required
+%
+% \title{}
+% \doi{}
+% \articleType{} %(Research Article, Review Article, Research Note...)
+% \authors{}
+% \authorAnnotations{}
+% \abstract{}
+% \correspondenceName{}
+% \correspondenceMail{}
+%
+% the following fiedls are optional
+%
+% \shortTitle{}
+% \abbreveations{}
+% \keywords{}
+\clearpage% new page for new paper
+
+%- New headers::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\pagestyle{fancy}
+
+\ifthenelse{\equal{\@shortTitle}{}}{
+\lhead{\small{\textbf{\@title}}}
+}{
+\lhead{\small{\textbf{\@shortTitle}}}
+}
+
+\rhead{\arabic{page}}
+\lfoot{\small{\textbf{\href{\@doi}{\@doi}}}}
+\rfoot{\small{\textbf{\href{www.xjenza.org}{www.xjenza.org}}}}
+\chead{}
+\cfoot{}
+
+\renewcommand{\headrulewidth}{0pt} %remove the header underline
+\renewcommand{\footrulewidth}{0pt} %remove the footer underline
+
+%- Keeping footnotes on the left side of the page:::::::::::::::::::::::::::::::::
+\interfootnotelinepenalty=10000
+
+%- Setting page style for title page::::::::::::::::::::::::::::::::::::::::::::::
+
+
+\fancypagestyle{firststyle}{
+	\lhead{}
+	\rhead{}
+	\rfoot{}
+	\chead{}
+	\cfoot{}
+	\fancyfoot[l]{
+	\ifx&\@correspondanceName&%
+	%No correspondance given
+	\else
+	\begin{adjustwidth}{-0mm}{}\footnotesize\emph{Correspondence to}: \@correspondanceName (\href{mailto:\@correspondanceMail}{\@correspondanceMail})\end{adjustwidth}
+	\fi
+	\large{\textbf{\copyright\,2014 Xjenza Online}}
+	}
+%	\fancyfoot[r]{\small{\textbf{\href{www.xjenza.org}{www.xjenza.org}}}}
+}
+
+%- Title page:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\begin{strip}
+	\begin{adjustwidth}{-2mm}{}
+	\begin{tabular*}{\textwidth}{@{}l@{\extracolsep{\fill}}r@{}}
+	\begin{tabular}{l}
+		Xjenza Online - Journal of The Malta Chamber of Scientists\\
+		\href{www.xjenza.org}{www.xjenza.org}\\
+		\ifx&\@doi&
+		%No DOI given
+		\else
+		DOI: \href{\@doi}{\@doi}
+		\fi
+		\\\\
+		\end{tabular} & \begin{tabular}{r} \includegraphics[width=2.5cm,height=2.2cm] {figs/icon.png} \end{tabular}
+	\end{tabular*}\end{adjustwidth}
+	\noindent\emph{\@articleType}\\
+
+	\noindent\Large{\textbf{\@title}}\\
+
+	\noindent\normalsize{\textbf{\@author}}\\
+	\@authorAnnotation
+	\vspace{2mm}
+\end{strip}
+
+\thispagestyle{firststyle}
+
+\ifx&\@abstrac&%
+% No abstract is given
+\else
+\noindent \textbf{Abstract. }\@abstrac\\
+\fi
+\keywordscom{\@keywords}
+\setcounter{figure}{0}
+\setcounter{equation}{0}
+\setcounter{table}{0}
+\setcounter{section}{0}
+\vspace{1mm}
+
+% Make line only if at least the abstract or keywords are given
+\ifx&\@abstrac&
+% No abstract is given
+\else\ifx&\@keywords&
+% No keywords given
+\else
+\noindent \hrulefill
+\fi\fi
+%%%
+
+%\abbreviationscom{\@abbreviations}% to be removed
+
+%- Default settings:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\keywords{}
+\abbreviations{}
+
+% Begins a refsection for separating bibliographies by papers.
+% The \paperbib command must be used at the end of each paper where the bibliography
+% will be printed.
+}
+
+%- Default settings:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+\keywords{}
+\abbreviations{}
+\shortTitle{}

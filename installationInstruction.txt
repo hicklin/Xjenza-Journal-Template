@@ -1,0 +1,45 @@
+Version 1.0
+
+Permission is granted to copy, distribute and/or modify this software under
+the terms of the LaTeX Project Public License, version
+1.3c (http://www.latex-project.org/lppl.txt).
+
+This package is a biblatex style for the Maltese journal "Xjenza". The
+style is based on the APA (American Psychological Association) style,
+currently maintained by Philip Kime (© 2013).
+
+It implements a citation style (xjenza.cbx) and a references section style
+(xjenza.bbx). The styles are loaded just like any other biblatex
+styles but I wouldn't try to use the citation and references styles
+separately as they rely on each other, macro-wise, in places.
+
+You will need to be using csquotes >= 4.3 and biblatex >= 2.0 The biber
+backend for biblatex >= 1.0 is also required. This style will not work
+correctly if using bibtex as the backend for biblatex.
+
+Installation
+
+	- Make sure you have biblatex and biber installed on your system.
+
+	- Move the "biblatex-xjenza" folder to the appropriate texmf directory, such as
+		Linux: /usr/local/share/texmf/tex/latex/
+		Mac: /usr/local/texlive/2014/texmf-dist/tex/latex
+	(A good way to find the approprate directory is to locat the folder "biblatex-apa".
+	"biblatex-xjenza" must be in the same directory)
+
+	- Update with
+		Linux: sudo texhash
+		Mac: sudo texhash
+
+Execution
+
+	- The pdf is generated in the usuall way using PDFLaTeX.
+
+	- To generate the reference section execute biber from terminal
+		> biber paper
+	  after having already executed PDFLaTeX. This should be followed by another PDFLaTeX
+	  If you are using texmaker, you can add the command
+		biber %|pdflatex -synctex=1 -interaction=nonstopmode %.tex|evince %.pdf
+	  to the
+		> Options > Configure TexMaker > Quick Build tab
+	  to execute these commands.
