@@ -192,27 +192,35 @@
 
 \thispagestyle{firststyle}
 
-\ifx&\@abstrac&%
+\ifthenelse{\equal{\@abstrac}{}}{
 % No abstract is given
-\else
+}{
 \noindent \textbf{Abstract. }\@abstrac\\
-\fi
+}
+
 \keywordscom{\@keywords}
-\setcounter{figure}{0}
-\setcounter{equation}{0}
-\setcounter{table}{0}
-\setcounter{section}{0}
 \vspace{1mm}
 
 % Make line only if at least the abstract or keywords are given
-\ifx&\@abstrac&
+\ifthenelse{\equal{\@abstrac}{}}{
 % No abstract is given
-\else\ifx&\@keywords&
+}{
+\ifthenelse{\equal{\@keywords}{}}{
 % No keywords given
-\else
+}{
 \noindent \hrulefill
-\fi\fi
-%%%
+}
+}
+
+%% Make line only if at least the abstract or keywords are given
+%\ifx&\@abstrac&
+%% No abstract is given
+%\else\ifx&\@keywords&
+%% No keywords given
+%\else
+%\noindent \hrulefill
+%\fi\fi
+%%%%
 
 %\abbreviationscom{\@abbreviations}% to be removed
 
@@ -231,3 +239,4 @@
 \keywords{}
 \abbreviations{}
 \shortTitle{}
+\abstrac{}
