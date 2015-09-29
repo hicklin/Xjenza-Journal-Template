@@ -55,7 +55,8 @@
 %  Set captions type-setting.
 %%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-\usepackage[margin=10pt,font=footnotesize,labelfont=bf,justification=justified]{caption}
+% removed "margin=10pt," (29/07/2015)
+\usepackage[font=footnotesize,labelfont=bf,justification=justified]{caption}
 
 
 %%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -63,7 +64,6 @@
 %%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 \def\keywords#1{\gdef\@keywords{#1}}
-\def\abbreviations#1{\gdef\@abbreviations{#1}}
 \def\shortTitle#1{\gdef\@shortTitle{#1}}
 \def\doi#1{\gdef\@doi{#1}}
 \def\articleType#1{\gdef\@articleType{#1}}
@@ -71,6 +71,7 @@
 \def\correspondanceName#1{\gdef\@correspondanceName{#1}}
 \def\correspondanceMail#1{\gdef\@correspondanceMail{#1}}
 \def\abstrac#1{\gdef\@abstrac{#1}}
+\def\selfCitation#1{\gdef\@selfCitation{#1}}
 
 
 %%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -81,22 +82,6 @@
 
 \ifthenelse{\equal{#1}{}}{}{
 \noindent \textbf{Keywords} #1\\
-}
-}
-
-
-%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-%  The \abbreviations{} command
-%%%:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-\newcommand{\abbreviationscom}[1]{%
-
-\ifthenelse{\equal{#1}{}}{}{
-\begin{small}
-\noindent \underline{\textit{Abbreviations}}\\
-\\
-#1
-\end{small}
 }
 }
 
@@ -120,20 +105,24 @@
 % the following fiedls are optional
 %
 % \shortTitle{}
-% \abbreveations{}
 % \keywords{}
 \clearpage% new page for new paper
 
 %- New headers::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 \pagestyle{fancy}
 
-\ifthenelse{\equal{\@shortTitle}{}}{
-\lhead{\small{\textbf{\@title}}}
-}{
-\lhead{\small{\textbf{\@shortTitle}}}
-}
+\ifx\@shortTitle\empty
+	\fancyhead[LE]{\arabic{pagna}\stepcounter{pagna}}
+	\fancyhead[RE]{\@title}
+	\fancyhead[LO]{\@title}
+	\fancyhead[RO]{\arabic{pagna}\stepcounter{pagna}}
+\else
+	\fancyhead[LE]{\arabic{pagna}\stepcounter{pagna}}
+	\fancyhead[RE]{\@shortTitle}
+	\fancyhead[LO]{\@shortTitle}
+	\fancyhead[RO]{\arabic{pagna}\stepcounter{pagna}}
+\fi
 
-\rhead{\arabic{page}}
 \lfoot{\small{\textbf{\href{\@doi}{\@doi}}}}
 \rfoot{\small{\textbf{\href{www.xjenza.org}{www.xjenza.org}}}}
 \chead{}
@@ -149,20 +138,19 @@
 
 
 \fancypagestyle{firststyle}{
-	\lhead{}
-	\rhead{}
+	\lhead{\@selfCitation}
+	\rhead{\stepcounter{pagna}}
 	\rfoot{}
 	\chead{}
 	\cfoot{}
 	\fancyfoot[l]{
-	\ifx&\@correspondanceName&%
+	\ifx\@correspondanceName\empty
 	%No correspondance given
 	\else
-	\begin{adjustwidth}{-0mm}{}\footnotesize\emph{Correspondence to}: \@correspondanceName (\href{mailto:\@correspondanceMail}{\@correspondanceMail})\end{adjustwidth}
+	\begin{adjustwidth}{-0mm}{}\footnotesize\emph{*Correspondence to}: \@correspondanceName{} (\href{mailto:\@correspondanceMail}{\@correspondanceMail})\end{adjustwidth}
 	\fi
-	\large{\textbf{\copyright\,2014 Xjenza Online}}
+	\large{\textbf{\copyright\,2015 Xjenza Online}}
 	}
-%	\fancyfoot[r]{\small{\textbf{\href{www.xjenza.org}{www.xjenza.org}}}}
 }
 
 %- Title page:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -173,7 +161,7 @@
 	\begin{tabular}{l}
 		Xjenza Online - Journal of The Malta Chamber of Scientists\\
 		\href{www.xjenza.org}{www.xjenza.org}\\
-		\ifx&\@doi&
+		\ifx\@doi\empty
 		%No DOI given
 		\else
 		DOI: \href{\@doi}{\@doi}
@@ -186,48 +174,38 @@
 	\noindent\Large{\textbf{\@title}}\\
 
 	\noindent\normalsize{\textbf{\@author}}\\
-	\@authorAnnotation
+	\textit\@authorAnnotation
 	\vspace{2mm}
 \end{strip}
 
 \thispagestyle{firststyle}
 
-\ifthenelse{\equal{\@abstrac}{}}{
-% No abstract is given
-}{
-\noindent \textbf{Abstract. }\@abstrac\\
-}
+% The following will draw a line below the abstract if only an abstract is present. If either the keywords are only present or both the keywords and the abstract are present, the line is drawn below the keywords.
 
-\keywordscom{\@keywords}
-\vspace{1mm}
+\ifx\@abstrac\empty
+	% No abstract is given
+\else
+	\noindent \textbf{Abstract. }\@abstrac\\
+	\vspace{-1ex}
+\fi
 
-% Make line only if at least the abstract or keywords are given
-\ifthenelse{\equal{\@abstrac}{}}{
-% No abstract is given
-}{
-\ifthenelse{\equal{\@keywords}{}}{
-% No keywords given
-}{
-\noindent \hrulefill
-}
-}
+\ifx\@keywords\empty
+	% No keywords given
+	\ifx\@abstrac\empty
+		% No abstract is given
+	\else
+		\noindent \rule{\columnwidth}{0.5pt}
+	\fi
+\else
+	\noindent \textbf{Keywords: }\@keywords\\
+	\noindent \rule{\columnwidth}{0.5pt}
+\fi
 
-%% Make line only if at least the abstract or keywords are given
-%\ifx&\@abstrac&
-%% No abstract is given
-%\else\ifx&\@keywords&
-%% No keywords given
-%\else
-%\noindent \hrulefill
-%\fi\fi
-%%%%
-
-%\abbreviationscom{\@abbreviations}% to be removed
+%\vspace{1mm}
 
 %- Default settings:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 \keywords{}
-\abbreviations{}
 
 % Begins a refsection for separating bibliographies by papers.
 % The \paperbib command must be used at the end of each paper where the bibliography
@@ -237,6 +215,5 @@
 %- Default settings:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 \keywords{}
-\abbreviations{}
 \shortTitle{}
 \abstrac{}

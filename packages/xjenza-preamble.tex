@@ -1,5 +1,5 @@
-\documentclass[a4paper,floatfix,twocolumn,preprintnumbers,superscriptaddress]{article}%twoside
-\usepackage{packages/xjenzaP}
+\documentclass[twoside,a4paper,floatfix,twocolumn,superscriptaddress]{article}%twoside
+\usepackage{../packages/xjenza}
 \usepackage{datetime,tabularx,multirow,subfigure,dblfloatfix}
 \usepackage{graphicx,float}
 \usepackage{fancyhdr,calc}
@@ -25,7 +25,7 @@
 \setlist{noitemsep}
 \usepackage{latexsym}
 \usepackage{pdfpages}
-\usepackage{multicol}
+%\usepackage{multicol}
 %\usepackage{flushend}%balancing cols
 
 %--Settings for the modified apa citation style--:::::::::::::::::::::::::::::::::
@@ -38,13 +38,13 @@
 %  with the files present in the packages folder.
 
 \usepackage[british]{babel}
-\usepackage[isbn=false,url=false,doi=false,eprint=false,sorting=nyt, backend=biber, style=xjenza]{biblatex}
-%\usepackage[sorting=nyt, backend=biber, style=apa]{biblatex}
+\usepackage[isbn=false,url=false,doi=false,eprint=false,sorting=nyt,backend=biber,style=apa]{biblatex}
 \AtEveryBibitem{% suppressing the month
   \clearfield{month}
   \clearfield{day}
 }
 \DeclareLanguageMapping{british}{british-apa}
+\setlength\bibhang{2em}
 %---
 
 %--Item spacing: add \begin{enumerate}[noitemsep,topsep=0pt,
@@ -60,11 +60,14 @@
 \newcommand{\dudt}[4]{#1_{#2\phantom{#3}#4}^{\phantom{#2}#3}}
 %---
 
-%--section white space--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-\titlespacing{\section}{0pt}{*1}{*1}
-\titlespacing{\subsection}{0pt}{*1}{*1}
-\titlespacing{\subsubsection}{0pt}{*1}{*1}
+%--Setting section headers--::::::::::::::::::::::::::::::::::::::::::::::::::::::
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+%\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+%\titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+%\titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{\thesubparagraph}{1em}{}
 %---
+
 
 %--paragraph spacing--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 \parindent 10 pt
